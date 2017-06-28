@@ -19,7 +19,7 @@ class W3cDatetime
   #     http://www.w3.org/TR/NOTE-datetime format
   # @return [DateTime]
   def self.parse(date_str)
-    date_regexp = /^(?<year>\d{4})(?:-(?<month>\d{2})(?:-(?<day>\d{2})(?:T(?<hour>\d{2}):(?<minute>\d{2}):?(?<second>\d{2})?\.?(?<milisecond>\d{1,2})?(?:(?<timezone>.+)|Z)?)?)?)?$/
+    date_regexp = /^(?<year>-?\d{4})(?:-(?<month>\d{2})(?:-(?<day>\d{2})(?:T(?<hour>\d{2}):(?<minute>\d{2}):?(?<second>\d{2})?\.?(?<milisecond>\d{1,3})?(?:(?<timezone>.+)|Z)?)?)?)?$/
     parsed = date_regexp.match(date_str)
 
     if parsed.nil?
