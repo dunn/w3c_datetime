@@ -39,6 +39,10 @@ class W3cDatetime
   end
 
   def self.get_timezone(timezone)
+    if timezone.to_i > 14
+      raise ArgumentError, "#{timezone} is not a valid offset"
+    end
+
     case timezone
     when 'Z', '', nil
       '+00:00'
