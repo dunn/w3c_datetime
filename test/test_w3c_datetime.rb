@@ -148,6 +148,14 @@ describe W3cDatetime do
     W3cDatetime.parse('2013-02-10').must_be_instance_of DateTime
   end
 
+  it 'parses year' do
+    W3cDatetime.parse('2013').must_equal DateTime.new(2013)
+  end
+
+  it 'parses year and month' do
+    W3cDatetime.parse('2013-02').must_equal DateTime.new(2013, 0o2)
+  end
+
   it 'parses date' do
     W3cDatetime.parse('2013-02-10').must_equal DateTime.new(2013, 0o2, 10)
   end

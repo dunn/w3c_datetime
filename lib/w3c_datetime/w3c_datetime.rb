@@ -19,12 +19,21 @@ class W3cDatetime
   #     http://www.w3.org/TR/NOTE-datetime format
   # @return [DateTime]
   def self.parse(date_str)
-    date_regexp = /^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(?:T(?<hour>\d{2}):(?<minute>\d{2}):?(?<second>\d{2})?\.?(?<milisecond>\d{1,2})?(?:(?<timezone>.+)|Z)?)?$/
+    date_regexp = /^(?<year>\d{4})(?:-(?<month>\d{2})(?:-(?<day>\d{2})(?:T(?<hour>\d{2}):(?<minute>\d{2}):?(?<second>\d{2})?\.?(?<milisecond>\d{1,2})?(?:(?<timezone>.+)|Z)?)?)?)?$/
     parsed = date_regexp.match(date_str)
 
     if parsed.nil?
       raise ArgumentError,
             "#{date_str} is not W3C-valid (http://www.w3.org/TR/NOTE-datetime)"
+    end
+
+    # YYYY and YYYY-MM are valid W3C dates, but since nil.to_i is 0 we
+    # have to give these two special handling or else below we'll try
+    # to do DateTime.new(2017, 0, 0), which is not valid.
+    return DateTime.new(parsed[:year].to_i) if parsed[:month].nil?
+
+    if parsed[:day].nil?
+      return DateTime.new(parsed[:year].to_i, parsed[:month].to_i)
     end
 
     DateTime.new(
